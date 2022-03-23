@@ -1,0 +1,31 @@
+{
+  "name": "user-login-auth-fullstack",
+  "version": "1.0.0",
+  "description": "A authentication \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dn \u001b[Da\u001b[Da\u001b[D \u001b[D authentication application with registration, login for users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ealpha072/User-Login-Auth-FullStack.git"
+  },
+  "author": "Alpha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ealpha072/User-Login-Auth-FullStack/issues"
+  },
+  "homepage": "https://github.com/ealpha072/User-Login-Auth-FullStack#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.2",
+    "concurrently": "^7.0.0",
+    "express": "^4.17.3",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.8",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0",
+    "validator": "^13.7.0"
+  }
+}
