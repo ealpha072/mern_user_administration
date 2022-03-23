@@ -4,6 +4,8 @@
   "description": "A authentication \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dn \u001b[Da\u001b[Da\u001b[D \u001b[D authentication application with registration, login for users",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
+    "server":"nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +29,8 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
