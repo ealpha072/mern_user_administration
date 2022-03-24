@@ -10,6 +10,7 @@ const validateLoginInputs = require('../../validation/login')
 
 //the user model
 const User = require('../../models/User')
+const { response } = require('express')
 
 // @route POST api/users/register
 // @desc Register user
@@ -50,3 +51,58 @@ router.post('/register', (request, response) => {
         }
     })
 })
+
+//@route POST api/users/login
+//@desc Login user and return JWT token
+//@access PUBLIC
+
+router.post('/login', (request, response)=>{
+    const {errors, isValid} = validateLoginInputs(request.body)
+
+    if(!isValid){
+        return response.status(400).json(errors)
+    }
+
+    const email = request.body.email
+    const password = request.body.password
+    
+    //find user by email
+    User.findOne({email}).then(user => {
+        if(!user){
+            return response.status(400).json({emailNotFound: 'Email not found'})
+        }
+
+        //check passwords
+        bcrypt.compare(password, user.password).then(isMatch => {
+            if(isMatch){
+                //we have matched the user
+                //create a jwt payload
+                const payload = {
+                    id:user.id,
+                    name:user.name
+                }
+                jwt.sign(
+                    payload,
+                    keys.secretKeys,
+                    {
+                        expiresIn:31556926
+                    },
+                    (err, token) => {
+                        response.json({
+                            success:true,
+                            token:'Bearer ' + token
+                        })
+                    }
+                )
+            }else{
+                return response.status(400).json({
+                    incorrectPassword: 'Incorrect password'
+                })
+            }
+        })
+    })
+})
+
+module.exports = router
+
+
