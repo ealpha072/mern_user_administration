@@ -4,9 +4,12 @@
   "description": "A authentication \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dn \u001b[Da\u001b[Da\u001b[D \u001b[D authentication application with registration, login for users",
   "main": "index.js",
   "scripts": {
+    "client-install":"npm install --prefix client",
     "start": "node server.js",
+    "client":"npm start --prefix client",
     "server":"nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
