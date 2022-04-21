@@ -13,23 +13,15 @@ router.get('/all', async (req, res)=>{
     }
 })
 
-// router.post('/register', async(req, res)=> {
-//     console.log(req.body)
-//     try {
-//         const user = req.body
-//         const mysalt = await bcrypt.genSalt(10)
-//         const hashedPass = await bcrypt.hash(user.password, mysalt)
-
-//         const newUser = new User({
-//             ...user,
-//             password:hashedPass
-//         })
-//         const savedUser = await newUser.save()
-//         res.status(200).json(savedUser)
-//     } catch (error) {
-//         res.status(400).json({msg: error.message})
-//     }
-// })
-
+router.post('/register/', (req, res)=>{
+    const user = req.body;
+    try{
+        const newUser = new User(user)
+        await newUser.save()
+        res.json(newUser)
+    }catch(error){
+        res.json({message:error.message})
+    }
+})
 
 export default router
