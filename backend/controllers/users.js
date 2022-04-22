@@ -5,25 +5,22 @@ import User from '../models/userModel.js'
 
 const router = express.Router()
 
-router.get('/all', async (req, res)=>{
-    try {
-        const users = await User.find({})
-        res.json(users)
-    } catch (error) {
-        res.json({message:error.message})
-    }
-})
-
 router.post('/register/', async (req, res) => {
     const {username, email, password} = req.body
     try{    
-        const saltRounds = 10
-        const passwordHash = await bcrypt.hash(password, saltRounds)
-        const user = new User({username, email, passwordHash})
-        const savedUser = await user.save()
-        res.json(savedUser)
+
+        const searchUser = await User.findOne({email:email, username:username})
+        if(searchUser === null ){
+            const saltRounds = 10
+            const passwordHash = await bcrypt.hash(password, saltRounds)
+            const user = new User({username, email, passwordHash})
+            const savedUser = await user.save()
+            res.json(savedUser)
+        }else{
+            res.json({message:'Email or username already taken'})
+        }
     }catch(error){
-        res.json({message:error.message})
+        res.json({error:error.message, message:'Username or email alraedy taken'})
     }
 }) 
 

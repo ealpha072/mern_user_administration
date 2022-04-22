@@ -25,7 +25,8 @@ export const userSlice = createSlice({
         isSuccess: false,
         isError: false,
         errorMessage: "",
-        isLoggedin:false
+        isLoggedin:false,
+        isRegistered:false
     },
     reducers:{
         clearState: (state) =>{
@@ -34,6 +35,9 @@ export const userSlice = createSlice({
             state.isError = false
             return state
         },
+        clearErrorMsg:state=>{
+            state.errorMessage = ''
+        },
         logout: (state) =>{
             state.userDetails = {}
             state.isFetching = false
@@ -41,9 +45,31 @@ export const userSlice = createSlice({
             state.isError = false
             state.errorMessage = ""
             state.isLoggedin =false
+            state.isRegistered = false
         }
     },
     extraReducers:{
+        //THIS HOLDS CODE FOR REGISTRATION
+        [postUser.pending]:(state) =>{
+            state.isFetching = true
+        },
+        [postUser.fulfilled]:(state, {payload}) =>{
+            state.isFetching = false
+            state.isSuccess = true
+            if(payload.message){
+                state.isError = true
+                state.errorMessage = payload.message
+            }else{
+                state.isRegistered = true 
+            }
+        },
+        [postUser.rejected]:(state, {payload}) => {
+            state.isFetching = false
+            state.isSuccess = false
+            state.isError = true
+            state.errorMessage = payload.message
+        },
+        //HOLDS CODE FOR LOGIN 
         [loginUser.pending]:(state) => {
             state.isFetching = true
         },
@@ -71,6 +97,6 @@ export const userSlice = createSlice({
 })
 
 
-export const {clearState, logout} = userSlice.actions
+export const {clearState, clearErrorMsg ,logout} = userSlice.actions
 export const userSelector = state => state.user
 

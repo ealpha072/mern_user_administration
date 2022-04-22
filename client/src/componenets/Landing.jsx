@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { loginUser, userSelector, clearState } from '../redux/userSlice'
+import { loginUser, userSelector, clearState, clearErrorMsg } from '../redux/userSlice'
 
 const Landing = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {isLoggedin, isSuccess, isError, errorMessage} = useSelector(userSelector)
+    const {isLoggedin, errorMessage} = useSelector(userSelector)
     const [formData, setFormData] = useState({email:'', password:''})
 
     useEffect(()=>{
@@ -63,13 +63,13 @@ const Landing = () => {
                     <button type='submit'>Sign in</button>
                 </form>
                 <div className="register">
-                    <h6>Dont have an account? Register <Link to='register' >Here</Link></h6>
+                    <h6>Dont have an account? Register <Link to='register' onClick={() => dispatch(clearErrorMsg())}>Here</Link></h6>
                 </div>
             </div>
             <div className="right side">
                 <h1>Hello, friend</h1>
                 <p>Enter your personal information to continue</p>
-                <Link to='register'><button>Sign up</button></Link>
+                <Link to='register'><button onClick={() => dispatch(clearErrorMsg())} >Sign up</button></Link>
             </div>
         </div>
     )
