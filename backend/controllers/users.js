@@ -15,7 +15,6 @@ router.get('/all', async (req, res)=>{
 })
 
 router.post('/register/', async (req, res) => {
-    console.log(req.body.password)
     const {username, email, password} = req.body
     try{    
         const saltRounds = 10
@@ -30,24 +29,28 @@ router.post('/register/', async (req, res) => {
 
 
 router.post('/login', async (req, res) => {
+    console.log(req.body)
     const {email, password} = req.body
     try {
-        const user = User.findOne({email})
-        const passWordMatch = user === null ? false : await bcrypt.compare(password, user.passwordHash)
+        const foundUser = await User.findOne({email:email})
 
-        if(!(user && passWordMatch)){
-            return res.status(400).json({error:'Invalid username or password'})
+        let evaluateUser = foundUser === null ? false : await bcrypt.compare(password, foundUser.passwordHash)
+       
+        if(!(foundUser && evaluateUser)){
+            return res.json({error:'Invalid username or password, please check and try again'})
         }
 
         const userForToken = {
-            email:email,
-            id:user._id
+            username:foundUser.username,
+            email:foundUser.email,
+            id:foundUser._id
         }
-        const token = jwt.sign(userForToken, process.env.SECRET)
-        res.status(200).json({token, username:user.username, email:user.email})
+        console.log(userForToken)
 
+        const token = jwt.sign(userForToken, process.env.SECRET)
+        res.json({token, username:foundUser.username, email:foundUser.email})
     } catch (error) {
         res.json({message:error.message})
     }
 })
-export default router
+export default router 

@@ -9,26 +9,68 @@ export const postUser = createAsyncThunk(
     }
 )
 
+export const loginUser = createAsyncThunk(
+    'user/login',
+    async(data, thunkAPI) => {
+        let response = await axios.post('http://localhost:5000/users/login', data)
+        return response.data
+    }
+)
+
 export const userSlice = createSlice({
     name:'user',
     initialState:{
-        entities:[],
-        loading:false
+        userDetails:{},
+        isFetching: false,
+        isSuccess: false,
+        isError: false,
+        errorMessage: "",
+        isLoggedin:false
     },
     reducers:{
-
+        clearState: (state) =>{
+            state.isFetching = false
+            state.isSuccess = false
+            state.isError = false
+            return state
+        },
+        logout: (state) =>{
+            state.userDetails = {}
+            state.isFetching = false
+            state.isSuccess = false
+            state.isError = false
+            state.errorMessage = ""
+            state.isLoggedin =false
+        }
     },
     extraReducers:{
-        [postUser.pending]:(state) => {
-            state.loading = true
+        [loginUser.pending]:(state) => {
+            state.isFetching = true
         },
-        [postUser.fulfilled]: (state, {payload}) => {
-            state.loading = false
-            state.entities = payload
+        [loginUser.fulfilled]: (state, {payload}) => {
+            console.log(payload)
+            state.isFetching = false
+            state.isSuccess = true
+            if(payload.error){
+                state.isError = true
+                state.errorMessage = payload.error
+            }else{
+                state.userDetails = payload
+                state.isLoggedin = true
+                state.errorMessage = false
+            }
+            return state
         },
-        [postUser.rejected]: (state, {payload}) => {
-            state.loading = false
+        [loginUser.rejected]: (state, {payload}) => {
+            state.isFetching = false
+            state.isSuccess = false
+            state.isError = true
+            state.errorMessage = payload.message
         }
     }
 })
+
+
+export const {clearState, logout} = userSlice.actions
+export const userSelector = state => state.user
 
