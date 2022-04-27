@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { postUser, userSelector, clearState, clearErrorMsg } from '../redux/userSlice'
 
-
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -38,6 +37,7 @@ const Register = () => {
         console.log(formData)
         dispatch(postUser(formData))
     }
+    
     const renderDiv = errorMessage !== '' ? 
     <div className="error-msg" style={{color:'red'}}><h5>{errorMessage}</h5></div> : null
     return (

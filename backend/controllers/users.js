@@ -8,7 +8,6 @@ const router = express.Router()
 router.post('/register/', async (req, res) => {
     const {username, email, password} = req.body
     try{    
-
         const searchUser = await User.findOne({email:email, username:username})
         if(searchUser === null ){
             const saltRounds = 10
@@ -38,16 +37,18 @@ router.post('/login', async (req, res) => {
         }
 
         const userForToken = {
-            username:foundUser.username,
             email:foundUser.email,
             id:foundUser._id
         }
+
         console.log(userForToken)
 
         const token = jwt.sign(userForToken, process.env.SECRET)
-        res.json({token, username:foundUser.username, email:foundUser.email})
+        res.json({token, email:foundUser.email})
     } catch (error) {
         res.json({message:error.message})
     }
 })
+
+
 export default router 
