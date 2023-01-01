@@ -10,18 +10,18 @@ const Landing = () => {
     const [formData, setFormData] = useState({email:'', password:''})
 
     useEffect(()=>{
-        return ()=>{
+        return () => {
             dispatch(clearState())
         }
     })
 
     useEffect(()=>{
-        if(isLoggedin === true){
+        if (isLoggedin === true){
             dispatch(clearState())
             navigate('/profile')
         }
     })
-   
+
 
     const handleChange = (e) => {
         e.preventDefault()
